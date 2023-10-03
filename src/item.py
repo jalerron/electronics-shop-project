@@ -24,6 +24,12 @@ class Item:
 
         Item.all.append(self)  # Добавляем созданный экземпляр в атрибут класса
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return self.__name
+
     @classmethod
     def instantiate_from_csv(cls, filename: str):
         """
@@ -73,11 +79,3 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price *= self.pay_rate
-
-# item1 = Item("СуперСмартфон", 10000, 5)
-# item1.name = 'СуперСмартфон'
-#
-#
-# Item.instantiate_from_csv('items.csv')
-# print(len(item1.name))
-# print(Item.data)
