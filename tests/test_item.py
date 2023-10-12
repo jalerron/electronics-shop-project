@@ -40,3 +40,10 @@ def test_repr(item1):
 
 def test_str(item1):
     assert str(item1) == 'Смартфон'
+
+
+def test_add(item1, phone1):
+    assert item1 + phone1 == 10
+    assert phone1 + phone1 == 10
+    phone1.quantity = 15
+    assert phone1 + phone1 == 30
