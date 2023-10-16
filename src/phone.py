@@ -11,10 +11,21 @@ class Phone(Item):
         Создание экземпляра класса телефон
         """
         super().__init__(name, price, quantity)
-        self.number_of_sim = number_of_sim
+        self.__number_of_sim = number_of_sim
 
-    def __setattr__(self, name, value):
-        if name == "number_of_sim" and value <= 0:
+    @property
+    def number_of_sim(self):
+        return self.__number_of_sim
+
+    @number_of_sim.setter
+    def number_of_sim(self, value: int):
+        if not isinstance(value, int) or value < 1:
             raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
-        else:
-            self.__dict__[name] = value
+        self.__number_of_sim = value
+
+
+    # def __setattr__(self, name, value):
+    #     if name == "number_of_sim" and value <= 0:
+    #         raise ValueError("Количество физических SIM-карт должно быть целым числом больше нуля.")
+    #     else:
+    #         self.__dict__[name] = value
