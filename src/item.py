@@ -1,5 +1,10 @@
-from accessify import private, protected
 import csv
+import os.path
+from pathlib import Path
+
+ROOT = Path(__file__).parent
+DATA_PATH = Path.joinpath(ROOT, 'items.csv')
+path = DATA_PATH
 
 
 class Item:
@@ -36,21 +41,27 @@ class Item:
         return self.quantity + other.quantity
 
     @classmethod
-    def instantiate_from_csv(cls, filename: str):
+    def instantiate_from_csv(cls):
         """
         Инициализируем экземпляры класса из файла item.csv
         """
-        with open(filename, 'r', newline='') as file:
-            data = csv.DictReader(file)
-            items = []
-            for data_ in data:
-                name = data_['name']
-                price = float(data_['price'])
-                quantity = int(data_['quantity'])
-                item = cls(name, price, quantity)
-                items.append(item)
+        if os.path.exists(path):
+            with open(path, 'r', newline='') as file:
+                data = csv.DictReader(file)
+                items = []
+                if len(data.fieldnames) < 3:
+                    raise InstantiateCSVError('Файл item.csv поврежден')
+                else:
+                    for data_ in data:
+                        name = data_['name']
+                        price = float(data_['price'])
+                        quantity = int(data_['quantity'])
+                        item = cls(name, price, quantity)
+                        items.append(item)
 
-            cls.all = items
+                cls.all = items
+        else:
+            raise FileNotFoundError('Отсутствует файл item.csv')
 
     @staticmethod
     def string_to_number(str_number: str):
@@ -84,3 +95,12 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price *= self.pay_rate
+
+
+class InstantiateCSVError(Exception):
+
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return self.message

@@ -1,8 +1,7 @@
 from src.item import Item
-from abc import ABC
 
 
-class MixinLang():
+class MixinLang:
     """
     Класс миксин для языка клавиатуры
     """
